@@ -6,7 +6,7 @@ let app = new Vue({
         selectedVariant: 0,
         altText: "A pair of socks",
         link: "https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=socks",
-        inventory: 0,
+        inventory: 10,
         onSale: true,
         details: ['80% cotton', '20% polyester', 'Gender-neutral'],
         variants: [
@@ -20,7 +20,7 @@ let app = new Vue({
                 variantId: 2235,
                 variantColor: 'blue',
                 variantImage: "./assets/vmSocks-blue-onWhite.jpg",
-                variantQuantity: 0
+                variantQuantity: 10
             }
         ],
         sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
@@ -53,6 +53,13 @@ let app = new Vue({
         },
         inStock(){
             return this.variants[this.selectedVariant].variantQuantity
+        },
+        sale(){
+            onsale = '';
+            if (this.onSale){
+                onsale = 'ON SALE';
+            }
+            return this.brand + ' ' + this.product + ' ' + onsale;
         }
     }
 })

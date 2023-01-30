@@ -17,14 +17,14 @@
                 <img :src="image" :alt="altText" />
             </div>
             <div class="product-info">
-                <h1>{{ title }}</h1>
+                <h1>{{ sale }}</h1>
                 <p>{{ description  }}</p>
                 <ul>
                     <li v-for="detail in details">{{ detail }}</li>
                 </ul>
                 <span v-show="onSale">ON SALE</span>
-                <p v-if="inventory > 10">In stock</p>
-                <p v-else-if="inventory <= 10 && inventory > 0">Almost sold out!</p>
+                <p v-if="variants[this.selectedVariant].variantQuantity > 10">In stock</p>
+                <p v-else-if="variants[this.selectedVariant].variantQuantity <= 10 && variants[this.selectedVariant].variantQuantity > 0">Almost sold out!</p>
                 <p v-else :class="{ out_of_stock: !inStock }">Out of stock</p>
                 <div
                         class="color-box"
