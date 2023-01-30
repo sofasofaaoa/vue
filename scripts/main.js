@@ -6,7 +6,10 @@ Vue.component('product', {
         premium: {
             type: Boolean,
             required: true
-        }
+        },
+        cart: {
+            type: Number
+        },
     },
     template: `
     <div class="product">
@@ -32,9 +35,6 @@ Vue.component('product', {
                     <li v-for="size in sizes" :key="sizes">{{size}}</li>
                 </ul>
                 <p>Shipping: {{ shipping }}</p>
-                <div class="cart">
-                    <p>Cart({{ cart }})</p>
-                </div>
                 <button @click="addToCart"
                         :disabled="!inStock"
                         :class="{ disabledButton: !inStock }">Add to cart</button>
@@ -53,7 +53,6 @@ Vue.component('product', {
             selectedVariant: 0,
             altText: "A pair of socks",
             link: "https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=socks",
-            inventory: 10,
             onSale: true,
             details: ['80% cotton', '20% polyester', 'Gender-neutral'],
             variants: [
@@ -71,19 +70,14 @@ Vue.component('product', {
                 }
             ],
             sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-            cart: 0,
         }
     },
     methods: {
         addToCart() {
-            if (this.cart < this.inventory) {
-                this.cart += 1
-            }
+            this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId);
         },
-        removeFromCart() {
-            if (this.cart > 0){
-                this.cart -= 1
-            }
+        removeFromCart(){
+            this.$emit('remove-from-cart', this.variants[this.selectedVariant].variantId);
         },
         updateProduct(index) {
             this.selectedVariant = index;
@@ -138,5 +132,16 @@ let app = new Vue({
     el: '#app',
     data: {
         premium: true,
-    }
+        cart: [],
+    },
+    methods: {
+        updateCart(id) {
+            this.cart.push(id);
+        },
+        deleteCart(id) {
+            if(this.cart.includes(id)) {
+                this.cart.splice(this.cart.indexOf(id), 1)
+            }
+        }
+    },
 })
